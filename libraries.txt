@@ -1,6 +1,6 @@
-# Wokwi Library List
-# See https://docs.wokwi.com/guides/libraries
-
-# Automatically added based on includes:
 DHT sensor library
-
+Adafruit Unified Sensor
+WiFiEspAT@1.5.0
+PubSubClient
+LiquidCrystal@1.0.7
+Servo

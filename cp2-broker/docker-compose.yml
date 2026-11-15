@@ -1,0 +1,24 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:ro
+    restart: unless-stopped
+  nodered:
+    build: ./nodered
+    container_name: nodered
+    ports:
+      - "1880:1880"
+    environment:
+      MQTT_HOST: ${MQTT_HOST:-test.mosquitto.org}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      MATRICULAS: ${MATRICULAS:-1038854_1028775}
+      MQTT_TOPIC: unidavi/iot/t27/${MATRICULAS:-1038854_1028775}/#
+    volumes:
+      - nodered-data:/data
+    restart: unless-stopped
+volumes:
+  nodered-data:

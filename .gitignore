@@ -1,0 +1,4 @@
+.DS_Store
+cp2-broker/.env
+__pycache__/
+wifi_secrets.h
