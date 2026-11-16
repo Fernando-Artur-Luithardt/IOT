@@ -62,13 +62,6 @@ class LiquidCrystal: public Print {
   void begin(int,int) {}
   void setCursor(int,int) {}
 };
-class Servo {
- public:
-  int pin = -1, angle = 90, angleAtAttach = -1;
-  void attach(int value) { pin = value; angleAtAttach = angle; }
-  void write(int value) { angle = value; }
-  int read() { return angle; }
-};
 class WiFiClient { public: void stop() {} };
 inline struct FakeWifi {
   bool init(Stream&) { return true; }

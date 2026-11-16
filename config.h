@@ -18,16 +18,20 @@
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
 #endif
-// LCD 1602A em modo paralelo de 4 bits; RW ligado ao GND.
+// LCD 1602A versão 5.5 em modo paralelo de 4 bits; RW ligado ao GND.
 #define LCD_RS 30
 #define LCD_E 31
 #define LCD_D4 32
 #define LCD_D5 33
 #define LCD_D6 34
 #define LCD_D7 35
-// Relé no pino 9, ativo em LOW. Testar inicialmente sem carga nos contatos.
+// Relé no pino 9, ativo em LOW conforme ajuste solicitado na montagem. Testar inicialmente sem carga nos contatos.
 #define RELE_ATIVO LOW
-// Servo posicional de sombreamento; ajustar ângulos ao mecanismo sem forçar batentes.
-#define SERVO_PIN 42
-#define SERVO_ANGULO_ABERTO 0
-#define SERVO_ANGULO_SOMBRA 90
+// 28BYJ-48 5 V via ULN2003: entradas IN1, IN2, IN3, IN4.
+#define PASSO_IN1 40
+#define PASSO_IN2 41
+#define PASSO_IN3 42
+#define PASSO_IN4 43
+// Meios passos relativos à posição aberta definida manualmente no início.
+#define PASSO_POSICAO_SOMBRA 1024L
+#define PASSO_INTERVALO_MS 4UL

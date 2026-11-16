@@ -8,11 +8,11 @@ Arduino Mega, aroeira-vermelha e ingá. Mantém os sensores e limiares do Checkp
 - Comunicação por **Serial1**: TX do ESP → RX1/pino **19**; TX1/pino **18** → RX do ESP, com adaptação de nível **5 V → 3,3 V** no sentido Mega → ESP; GND comum. Use os sinais UART do ESP, não conecte o TX do Mega diretamente ao RX de 3,3 V.
 - Alimente o shield pela entrada de alimentação especificada nele (normalmente 5 V via encaixe, usando o regulador do shield). Não alimente o ESP pelo pino 3,3 V do Mega.
 - Para a variante **WangTongze V1.0 com quatro DIP switches**, mantenha SW1/SW2 OFF para isolar D0/D1; SW3 OFF para execução normal. Ligue a Serial1 pelo conector UART/Debug com a conversão de nível acima. A inscrição V1.0 aparece em variantes diferentes: confira a serigrafia/manual antes de alterar DIP switches; não use a configuração de uma Mega com ESP integrado. Há relatos documentados de defeito no circuito de conversão dessa variante, por isso não se presume que o Debug Port aceite 5 V.
-- LCD **1602A paralelo 16×2**: RS/E/D4/D5/D6/D7 → **30/31/32/33/34/35**, RW → GND. Alimentação e contraste em [docs/montagem.md](docs/montagem.md).
+- LCD **1602A versão 5.5 paralelo 16×2**: RS/E/D4/D5/D6/D7 → **30/31/32/33/34/35**, RW → GND. Alimentação e contraste em [docs/montagem.md](docs/montagem.md).
 - Solo/potenciômetro → A1; luminosidade/LDR → A0; DHT22 → 7.
-- LED irrigação aroeira → 22; LED irrigação ingá → 26; relé ventilação → 9. Servo posicional de sombreamento: sinal → 42, alimentação externa adequada ao modelo e GND comum com o Mega. Instalar a biblioteca **Servo**. Posições configuráveis: aberto/sem sombra **0°**, sombreado **90°**; não usar servo de rotação contínua.
+- LED irrigação aroeira → 22; LED irrigação ingá → 26; relé ventilação → 9. Motor de passo **28BYJ-48 5 V + ULN2003**: IN1/IN2/IN3/IN4 → **40/41/42/43**, alimentação externa 5 V e GND comum. Iniciar com a tela aberta. Percurso configurável em `PASSO_POSICAO_SOMBRA`: 1024 meios passos (aproximadamente ¼ de volta).
 
-O `diagram.json` representa sensores, LEDs, relé, servo e LCD no Wokwi. Na simulação, o servo usa 5 V do Mega; para a ligação física com fonte externa, seguir [docs/montagem.md](docs/montagem.md). **Não contém simulação do shield Wi-Fi**: a validação MQTT desta versão exige Mega + shield físico com firmware AT. Sem o shield, sensores, regras, serial e display continuam funcionando.
+O `diagram.json` representa sensores, LEDs, relé e LCD no Wokwi. Quatro LEDs adicionais representam somente os sinais IN1–IN4; **não simulam o motor, o driver nem o shield Wi-Fi**. A montagem física e a alimentação do motor estão em [docs/montagem.md](docs/montagem.md). Sem rede, sensores, regras, motor e display continuam sendo atendidos. O motor não possui referência automática: reiniciar exige posicionar a tela aberta previamente.
 
 Confira primeiro o mapa completo de ligações e o teste sem rede em **[docs/montagem.md](docs/montagem.md)**.
 
@@ -61,7 +61,7 @@ node --test tests/flow.test.cjs
 docker compose -f cp2-broker/docker-compose.yml config --quiet
 ```
 
-O teste nativo usa periféricos simulados para verificar a execução local durante esperas, os limiares, os comandos de posição do servo e a preservação de publicações pendentes; não substitui o teste do shield e do servo físicos.
+O teste nativo usa periféricos simulados para verificar a execução local durante esperas, os limiares, a sequência de meios passos, ida/volta e inversão do motor e a preservação de publicações pendentes; não substitui o teste do shield e do motor físicos.
 
 Seguir `docs/checkpoint2-entrega.md` para incorporar os Blocos 4, 6, 8, 9 e 10 **ao documento original do projeto**, registrar testes físicos e anexar evidências. Avaliação por pares e resultados observados devem ser preenchidos pela dupla.
 

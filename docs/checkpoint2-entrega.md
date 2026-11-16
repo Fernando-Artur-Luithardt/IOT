@@ -8,7 +8,7 @@ Este arquivo é um roteiro de integração, **não um novo documento de entrega*
 - Carlos Eduardo Nogueira de Oliveira: **1028775**.
 - Espécies: aroeira-vermelha e ingá.
 - Rede implementada: Mega 2560 + ESP8266 WiFi Shield V1.0 informado pela dupla; Serial1 (18/19), firmware AT, WiFiEspAT 1.5.0 e DHCP. Conferir switches, baud e conversão de nível conforme README.
-- Substituições: potenciômetro representa umidade do solo; dois LEDs representam irrigação; relé representa ventilação; servo posicional representa a tela de sombreamento (sinal no pino 42, 0° aberto e 90° sombreado, ajustáveis em config.h). Mesmo conjunto de sensores compartilhado pelas duas regras, conforme CP1.
+- Substituições: potenciômetro representa umidade do solo; dois LEDs representam irrigação; relé representa ventilação; motor de passo 28BYJ-48 de 5 V com ULN2003 representa a tela de sombreamento (IN1–IN4 nos pinos 40–43, zero aberto assumido manualmente e 1024 meios passos para sombra, ajustável em config.h). Mesmo conjunto de sensores compartilhado pelas duas regras, conforme CP1.
 - Preservados: solo aroeira < 30%; sombra aroeira quando leitura relativa de luz > 90%; solo ingá < 60%; ventilação ingá quando temperatura > 25 °C. Luminosidade é percentual relativo do ADC, não lux calibrado.
 
 ## Bloco 4 — mensagens e intervalo
@@ -32,8 +32,8 @@ Prefixo da dupla: `unidavi/iot/t27/1038854_1028775/{especie}`. Espécies usadas 
 ```mermaid
 flowchart LR
     Sensores[Potenciômetro + LDR + DHT22] --> Mega[Arduino Mega: leitura e regras locais]
-    Mega --> LEDs[Atuadores: LEDs de irrigação, relé de ventilação e servo de sombra]
-    Mega --> LCD[LCD 1602A paralelo: dados e conexão]
+    Mega --> LEDs[Atuadores: LEDs de irrigação, relé de ventilação e motor de passo de sombra]
+    Mega --> LCD[LCD 1602A versão 5.5 paralelo: dados e conexão]
     Mega --> ESP[ESP8266 WiFi Shield V1.0 via Serial1]
     ESP --> AP[Ponto de acesso Wi-Fi 2,4 GHz]
     AP --> Broker[test.mosquitto.org:1883]
@@ -41,7 +41,7 @@ flowchart LR
     NR --> Dashboard[Dashboard: um grupo por espécie]
 ```
 
-Mosquitto local em Docker é usado no teste inicial. O broker online é usado na entrega. Sensores, regras e display independem da rede. O esquema físico deve incluir shield, ligação Serial1 com conversão de nível, LCD e alimentação externa do servo com GND comum. O JSON do Wokwi inclui o servo, mas não simula o shield. Ver docs/montagem.md.
+Mosquitto local em Docker é usado no teste inicial. O broker online é usado na entrega. Sensores, regras e display independem da rede. O esquema físico deve incluir shield, ligação Serial1 com conversão de nível, LCD e alimentação externa de 5 V do motor com GND comum. O JSON do Wokwi representa as quatro entradas do driver por LEDs; não simula motor, ULN2003 ou shield. Ver docs/montagem.md.
 
 ## Bloco 8 — comunicação MQTT
 
@@ -64,7 +64,7 @@ Mosquitto local em Docker é usado no teste inicial. O broker online é usado na
 |---|---|---|
 | Broker local | Sensores e estados recebidos no debug | Pendente |
 | Broker online | Mesmos tópicos recebidos via test.mosquitto.org | Pendente |
-| Variar solo/luz/temperatura | LEDs, relé, servo e estados MQTT seguem limiares; servo em 0° para luz ≤ 90% e 90° acima disso | Pendente |
+| Variar solo/luz/temperatura | LEDs, relé, motor e estados MQTT seguem limiares; motor retorna ao zero para luz ≤ 90% e avança até 1024 meios passos acima disso | Pendente |
 | Sem mudança de atuador | Não repetir estado a cada leitura | Pendente |
 | Nova assinatura | Receber estados e status retidos | Pendente |
 | Desligar ponto de acesso Wi-Fi | Leituras, atuadores e LCD continuam; Wi-Fi OFF; não surge novo aviso de envio | Pendente |

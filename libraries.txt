@@ -3,4 +3,3 @@ Adafruit Unified Sensor
 WiFiEspAT@1.5.0
 PubSubClient
 LiquidCrystal@1.0.7
-Servo

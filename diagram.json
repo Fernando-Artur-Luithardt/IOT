@@ -111,26 +111,96 @@
       "attrs": {}
     },
     {
-      "type": "wokwi-servo",
-      "id": "servo1",
-      "top": -170,
-      "left": 300,
-      "attrs": {}
-    },
-    {
       "type": "wokwi-text",
       "id": "nota",
       "top": -550,
       "left": -220,
       "attrs": {
-        "text": "LCD + sensores + LEDs + rele + servo (sinal 42).\nServo fisico: fonte externa e GND comum. ESP8266: docs/montagem.md."
+        "text": "LCD + sensores + rele. LEDs IN1-IN4 representam sinais do driver.\nMotor 28BYJ-48/ULN2003 e ESP8266 nao simulados: docs/montagem.md."
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "fase0",
+      "top": -180,
+      "left": 300,
+      "attrs": {
+        "color": "orange",
+        "label": "IN1"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rfase0",
+      "top": -100,
+      "left": 300,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "fase1",
+      "top": -180,
+      "left": 355,
+      "attrs": {
+        "color": "orange",
+        "label": "IN2"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rfase1",
+      "top": -100,
+      "left": 355,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "fase2",
+      "top": -180,
+      "left": 410,
+      "attrs": {
+        "color": "orange",
+        "label": "IN3"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rfase2",
+      "top": -100,
+      "left": 410,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "fase3",
+      "top": -180,
+      "left": 465,
+      "attrs": {
+        "color": "orange",
+        "label": "IN4"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rfase3",
+      "top": -100,
+      "left": 465,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
       }
     }
   ],
   "connections": [
-    ["servo1:PWM", "mega:42", "orange", []],
-    ["servo1:V+", "mega:5V", "red", []],
-    ["servo1:GND", "mega:GND.2", "black", []],
     [
       "mega:5V",
       "bb1:bp.1",
@@ -370,6 +440,78 @@
       "rele1:IN",
       "mega:9",
       "green",
+      []
+    ],
+    [
+      "mega:40",
+      "rfase0:1",
+      "green",
+      []
+    ],
+    [
+      "rfase0:2",
+      "fase0:A",
+      "green",
+      []
+    ],
+    [
+      "fase0:C",
+      "mega:GND.2",
+      "black",
+      []
+    ],
+    [
+      "mega:41",
+      "rfase1:1",
+      "green",
+      []
+    ],
+    [
+      "rfase1:2",
+      "fase1:A",
+      "green",
+      []
+    ],
+    [
+      "fase1:C",
+      "mega:GND.2",
+      "black",
+      []
+    ],
+    [
+      "mega:42",
+      "rfase2:1",
+      "green",
+      []
+    ],
+    [
+      "rfase2:2",
+      "fase2:A",
+      "green",
+      []
+    ],
+    [
+      "fase2:C",
+      "mega:GND.2",
+      "black",
+      []
+    ],
+    [
+      "mega:43",
+      "rfase3:1",
+      "green",
+      []
+    ],
+    [
+      "rfase3:2",
+      "fase3:A",
+      "green",
+      []
+    ],
+    [
+      "fase3:C",
+      "mega:GND.2",
+      "black",
       []
     ]
   ],

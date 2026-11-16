@@ -15,7 +15,7 @@
 DHT dht(PIN_DHT, DHT_TYPE);
 
 // =====================================================
-// ATUADORES: LEDS DE IRRIGAÇÃO, SERVO E RELÉ
+// ATUADORES: LEDS DE IRRIGAÇÃO, MOTOR DE PASSO E RELÉ
 // =====================================================
 
 // Aroeira-vermelha
@@ -127,6 +127,7 @@ void cp2TarefasLocais() {
   if (!cp2LocaisProntas || cp2EmTarefaLocal) return;
   cp2EmTarefaLocal = true;
   atualizarSensores();
+  sombreamentoAtualizar();
   cp2Desenhar();
   cp2EmTarefaLocal = false;
 }
