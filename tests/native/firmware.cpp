@@ -110,5 +110,15 @@ int main() {
     fakeNow += PASSO_INTERVALO_MS; sombreamentoAtualizar();
   }
   assert(sombraPosicao == 0);
+  // CP3 exige t28 e ventilacao estritamente acima de 30 graus.
+  char topico[144];
+  cp2Topico(topico, sizeof(topico), 1, "sensor/temperatura");
+  assert(std::string(topico) == "unidavi/iot/t28/1038854_1028775/inga/sensor/temperatura");
+  fakeTemp = 30.0;
+  fakeNow += INTERVALO_LEITURA; atualizarSensores();
+  assert(outputs[RELE_INGA_VENTILACAO] == !RELE_ATIVO);
+  fakeTemp = 30.1;
+  fakeNow += INTERVALO_LEITURA; atualizarSensores();
+  assert(outputs[RELE_INGA_VENTILACAO] == RELE_ATIVO);
   std::puts("Firmware: tarefas locais durante esperas AT, regras e publicações concorrentes OK.");
 }

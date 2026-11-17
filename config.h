@@ -2,8 +2,11 @@
 
 // Fernando: 1038854. Carlos: 1028775.
 #define MATRICULAS "1038854_1028775"
+// CP3: a placa usa o broker LOCAL; o Node-RED faz a ponte TLS autorizada.
+// Atualize o IP abaixo para o computador que executa o Mosquitto.
 #define MQTT_HOST "10.5.61.57"
 #define MQTT_PORT 1883
+#define MQTT_TURMA "t28"
 #define DEVICE_ID "mega01"
 
 // Mega 2560 + ESP8266 WiFi Shield V1.0, com firmware AT.

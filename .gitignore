@@ -2,3 +2,9 @@
 cp2-broker/.env
 __pycache__/
 wifi_secrets.h
+cp3/.env
+**/node_modules/
+**/.runtime/
+Arquivos do Trabalho 03/Ficha_Conexao_Entrega_Final.docx
+cp3/**/flows_cred.json
+*.log

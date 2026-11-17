@@ -1,0 +1,17 @@
+<template>
+  <div class="cp3-grid" v-if="msg?.payload">
+    <article v-for="s in msg.payload.sensors" :key="s.sensor" class="cp3-card" :class="{'cp3-muted': !s.current}">
+      <h3>{{s.sensor}}</h3>
+      <div class="cp3-value">{{s.value === null ? 'sem leitura' : s.value.toFixed(1)}} <span class="cp3-unit" v-if="s.value !== null">{{s.unit}}</span></div>
+      <p>{{s.age === null ? 'Aguardando primeira amostra' : `há ${s.age} s`}}<span v-if="s.value !== null && !s.current"> · leitura não atual</span></p>
+      <div class="cp3-gauge" role="meter" :aria-label="s.sensor" aria-valuemin="0" :aria-valuemax="s.max" :aria-valuenow="s.value === null ? undefined : Math.max(0,Math.min(s.max,s.value))" :style="{background:bands(s),opacity:s.current?1:0.4}">
+        <span v-if="s.value !== null" class="cp3-needle" :style="{left:Math.max(0,Math.min(100,s.value/s.max*100))+'%'}"></span>
+      </div>
+      <div class="cp3-scale"><span>0 {{s.unit}}</span><span>Limiar: {{s.limit}} {{s.unit}}</span><span>{{s.max}} {{s.unit}}</span></div>
+      <p class="cp3-small">Amarelo: {{s.sensor}} {{s.op}} {{s.limit}} {{s.unit}}. Verde: sem atuação desta regra.</p>
+    </article>
+  </div>
+</template>
+<script>
+export default { methods: { bands(s) { const a=s.limit/s.max*100,b=(a+100)/2; const c=s.op==='<'?['#fbc02d','#2e7d32','#2e7d32']:['#2e7d32','#fbc02d','#fbc02d']; return `linear-gradient(to right,${c[0]} 0%,${c[0]} ${a}%,${c[1]} ${a}%,${c[1]} ${b}%,${c[2]} ${b}%,${c[2]} 100%)`; } } }
+</script>

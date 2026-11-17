@@ -1,0 +1,42 @@
+<template>
+  <section v-if="msg?.payload" class="cp3-general" aria-live="polite">
+    <nav class="cp3-tabs" aria-label="Espécies">
+      <a href="/dashboard/aroeira-vermelha" :aria-current="msg.payload.slug==='aroeira-vermelha'?'page':undefined">Aroeira-vermelha</a>
+      <a href="/dashboard/inga" :aria-current="msg.payload.slug==='inga'?'page':undefined">Ingá</a>
+    </nav>
+    <div class="cp3-status" :style="{borderColor:msg.payload.color}">
+      <strong :style="{color:msg.payload.color}">{{msg.payload.general?.value || 'SEM DADOS'}}</strong>
+      <p>{{msg.payload.general?.reason}}</p>
+    </div>
+    <h2>{{msg.payload.name}}</h2><p><em>{{msg.payload.scientific}}</em> · {{msg.payload.family}}</p>
+    <p>Equipe {{msg.payload.team}} · Atualização: {{lastUpdate(msg.payload)}}</p>
+    <div class="cp3-connections">
+      <span :class="msg.payload.broker ? 'cp3-good' : 'cp3-bad'">HiveMQ: {{msg.payload.broker ? 'conectado' : 'desconectado'}}</span>
+      <span :class="msg.payload.bridge === 'online' ? 'cp3-good' : 'cp3-bad'">Ponte local: {{msg.payload.bridge}}</span>
+      <span>Placa: {{msg.payload.board || 'sem status'}}</span>
+    </div>
+    <p class="cp3-small">Banco: {{msg.payload.persistence.status}} · {{msg.payload.persistence.pending}} registro(s) na fila<span v-if="msg.payload.persistence.dropped"> · {{msg.payload.persistence.dropped}} não armazenado(s)</span></p>
+  </section>
+  <p v-else>Sem leitura. Aguardando conexão.</p>
+</template>
+<script>
+export default { methods: { lastUpdate(p) { const t = Math.max(...p.sensors.map(s => s.at || 0)); return t ? new Date(t).toLocaleTimeString('pt-BR') : 'sem leitura'; } } }
+</script>
+<style>
+.cp3-general h2{font-size:24px;margin:14px 0 4px}.cp3-general p{margin:6px 0;line-height:1.5}
+.cp3-status{border-left:6px solid;padding:12px 16px;background:#f7f8fa;border-radius:5px}
+.cp3-status strong{font-size:28px}.cp3-connections{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.cp3-connections span{padding:6px 10px;border:1px solid #d8dee5;border-radius:6px}
+.cp3-good{color:#2e7d32}.cp3-bad{color:#c62828}.cp3-small{font-size:14px;color:#59616f}
+.cp3-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:20px;padding:4px}
+.cp3-card{border:1px solid #d8dee5;border-radius:8px;padding:18px;min-width:0}.cp3-card h3{font-size:20px;margin:0 0 12px}
+.cp3-muted{color:#6b7280}.cp3-value{font-size:34px;font-weight:650;line-height:1.3}.cp3-unit{font-size:20px}
+.cp3-gauge{height:18px;position:relative;border-radius:3px;margin:22px 0 8px;border:1px solid #98a1ab}
+.cp3-needle{position:absolute;top:-6px;bottom:-6px;width:3px;background:#172330;transform:translateX(-50%)}
+.cp3-scale{display:flex;justify-content:space-between;font-size:13px}.cp3-card p{line-height:1.5;margin:8px 0}
+.cp3-chart{width:100%;height:auto;display:block}.cp3-chart text{font:13px sans-serif;fill:#505b68}
+.cp3-charts{display:grid;gap:20px}.cp3-rule{font-size:16px}.cp3-history-note{font-size:14px;color:#59616f}
+.cp3-tabs{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}.cp3-tabs a{padding:8px 14px;color:#374151;text-decoration:none;border-bottom:3px solid transparent}
+.cp3-tabs a[aria-current=page]{border-color:#2e7d32;color:#2e7d32;font-weight:700;background:#f0f7f0}
+@media(max-width:600px){.cp3-chart text{font-size:28px}}
+</style>

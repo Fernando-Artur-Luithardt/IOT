@@ -46,7 +46,7 @@ unsigned long cp2Ciclo = 0;
 unsigned long cp2UltimoEnvio = 0, cp2UltimaTela = 0, cp2Tentativa = 0;
 
 void cp2Topico(char* destino, size_t tamanho, uint8_t especie, const char* sufixo) {
-  snprintf(destino, tamanho, "unidavi/iot/t27/%s/%s/%s", MATRICULAS, cp2Especie[especie], sufixo);
+  snprintf(destino, tamanho, "unidavi/iot/%s/%s/%s/%s", MQTT_TURMA, MATRICULAS, cp2Especie[especie], sufixo);
 }
 
 bool cp2Rede() {
@@ -229,7 +229,7 @@ void cp2Loop() {
   if (sistemaIniciado && agora - ultimaLeitura >= INTERVALO_LEITURA - 3000UL) return;
   cp2Tentativa = agora;
   char cliente[100], status[144];
-  snprintf(cliente, sizeof(cliente), "t27-%s-%s-%s", MATRICULAS, cp2Especie[i], DEVICE_ID);
+  snprintf(cliente, sizeof(cliente), "%s-%s-%s-%s", MQTT_TURMA, MATRICULAS, cp2Especie[i], DEVICE_ID);
   cp2Topico(status, sizeof(status), i, "status");
   Serial.print(F("[CP2] MQTT conectando: ")); Serial.println(cp2Especie[i]);
   if (cp2Mqtt[i].connect(cliente, status, 1, true, "offline")) {

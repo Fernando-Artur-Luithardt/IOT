@@ -35,7 +35,8 @@ const int LIMITE_LUZ_AROEIRA  = 90;
 
 // Ingá
 const int LIMITE_SOLO_INGA = 60;
-const float LIMITE_TEMP_INGA = 25.0;
+// Cenário oficial, família 4 (Especificação do Dashboard CP3).
+const float LIMITE_TEMP_INGA = 30.0;
 
 // =====================================================
 // INTERVALOS

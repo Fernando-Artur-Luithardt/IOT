@@ -1,0 +1,24 @@
+<template>
+  <section class="cp3-charts" v-if="msg?.payload">
+    <article v-for="s in msg.payload.sensors" :key="s.sensor" class="cp3-card">
+      <h3>{{s.sensor}} · {{s.unit}}</h3>
+      <svg viewBox="0 0 700 240" class="cp3-chart" role="img" :aria-label="`Histórico de ${s.sensor} dos últimos 30 minutos; limiar ${s.limit} ${s.unit}`">
+        <line v-for="v in [0,0.5,1]" :key="v" x1="50" x2="680" :y1="190-v*160" :y2="190-v*160" stroke="#e0e5ea"/>
+        <text x="8" y="194">0</text><text x="8" y="114">{{s.max/2}}</text><text x="8" y="34">{{s.max}}</text>
+        <line x1="50" x2="680" :y1="y(s.limit,s.max)" :y2="y(s.limit,s.max)" stroke="#ef6c00" stroke-width="2" stroke-dasharray="7 5"/>
+        <path :d="line(s,msg.payload)" fill="none" stroke="#1976d2" stroke-width="2.5"/>
+        <circle v-for="(p,i) in s.history" :key="i" :cx="x(p.x,msg.payload)" :cy="y(p.y,s.max)" r="2" fill="#1976d2"/>
+        <text v-if="!s.history.length" x="365" y="110" text-anchor="middle">sem leitura</text>
+        <text x="50" y="216">−30 min</text><text x="365" y="216" text-anchor="middle">−15 min</text><text x="680" y="216" text-anchor="end">agora</text>
+      </svg>
+      <p class="cp3-history-note">Azul: leituras · tracejado: limiar {{s.limit}} {{s.unit}} · {{s.history.length}} amostra(s). Intervalos sem dados aparecem como lacunas.</p>
+    </article>
+  </section>
+</template>
+<script>
+export default { methods: {
+  x(t,p){return 50+Math.max(0,Math.min(1,(t-(p.now-p.window))/p.window))*630},
+  y(v,max){return 190-Math.max(0,Math.min(max,v))/max*160},
+  line(s,p){return s.history.map((v,i)=>`${i===0 || v.x-s.history[i-1].x>24000?'M':'L'}${this.x(v.x,p)},${this.y(v.y,s.max)}`).join(' ')}
+} }
+</script>

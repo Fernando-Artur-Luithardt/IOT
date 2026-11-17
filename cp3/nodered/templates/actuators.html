@@ -1,0 +1,12 @@
+<template>
+  <div class="cp3-grid" v-if="msg?.payload">
+    <article v-for="a in msg.payload.actuators" :key="a.name" class="cp3-card">
+      <h3>{{a.name}}</h3>
+      <strong class="cp3-value" :style="{color:a.current && a.value ? '#2e7d32':'#6b7280',fontSize:'26px'}">{{!a.current ? 'sem estado atual' : a.value ? 'LIGADO' : 'desligado'}}</strong>
+      <p v-if="a.since">{{a.observed ? 'Observado desde' : 'Desde'}} {{new Date(a.since).toLocaleTimeString('pt-BR')}}<span v-if="!a.current"> · último conhecido: {{a.value ? 'ligado' : 'desligado'}}</span></p>
+      <p v-else class="cp3-muted">Aguardando estado</p>
+      <p class="cp3-rule">Regra: {{a.rule}}</p>
+      <p :style="{color:a.coherent === false ? '#ef6c00' : '#6b7280'}">Coerência: {{a.coherent === null ? 'aguardando dados atuais' : a.coherent ? 'OK' : 'divergente'}}</p>
+    </article>
+  </div>
+</template>

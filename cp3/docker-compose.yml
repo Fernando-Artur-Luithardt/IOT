@@ -1,0 +1,24 @@
+name: iot-cp3
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "${MQTT_LOCAL_BIND:-0.0.0.0}:1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/acl:/mosquitto/config/acl:ro
+      - mqtt-data:/mosquitto/data
+    restart: unless-stopped
+  nodered:
+    build: ./nodered
+    env_file: .env
+    ports:
+      - "${DASHBOARD_BIND:-127.0.0.1}:${DASHBOARD_PORT:-1881}:1880"
+    volumes:
+      - nodered-data:/data
+    depends_on:
+      - mosquitto
+    restart: unless-stopped
+volumes:
+  mqtt-data:
+  nodered-data:

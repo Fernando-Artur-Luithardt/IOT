@@ -69,11 +69,11 @@ O firmware usa uma sequência de oito meios passos, com intervalo mínimo de 4 m
 
 O movimento avança um meio passo por atendimento, sem `delay()` ou laço de espera. Leituras e display continuam durante o movimento. Esperas de rede podem alongar o percurso. Ao chegar ao destino, mantém a última fase energizada para segurar a tela.
 
-O relé representa a ventilação do ingá acima de 25 °C. Primeiro testar **sem carga nos contatos**, observando LED e clique. Para um módulo ativo em LOW, configurar `RELE_ATIVO LOW`; para ativo em HIGH, usar `HIGH`. O estado inicial é desligado. A foto não informa a tensão/potência de um ventilador: os terminais COM/NO ficam sem carga neste primeiro teste.
+O relé representa a ventilação do ingá acima de 30 °C. Primeiro testar **sem carga nos contatos**, observando LED e clique. Para um módulo ativo em LOW, configurar `RELE_ATIVO LOW`; para ativo em HIGH, usar `HIGH`. O estado inicial é desligado. A foto não informa a tensão/potência de um ventilador: os terminais COM/NO ficam sem carga neste primeiro teste.
 
 ### Teste opcional: LED no lugar do relé
 
-O firmware está com `RELE_ATIVO LOW`, conforme a inversão solicitada para a montagem. Validar LED e clique do módulo acima e abaixo de 25 °C após reenviar o sketch. Para testar a saída de ventilação com um LED, alterar temporariamente para `RELE_ATIVO HIGH`. Com a alimentação desligada, desconectar o módulo relé e ligar **pino 9 → resistor de 220 Ω → ânodo do LED (perna longa); cátodo (perna curta/lado achatado) → GND do Mega**. Reenviar o sketch. O LED inicia apagado, acende acima de 25 °C e apaga em 25 °C ou menos, acompanhando `Ventilacao` no serial. A primeira leitura ocorre após cerca de 18 s; as seguintes, a cada 8 s. Ao reinstalar o relé, remover o LED de teste, ajustar `RELE_ATIVO` à polaridade do módulo e reenviar o sketch. O diagrama principal continua representando a montagem com relé.
+O firmware está com `RELE_ATIVO LOW`, conforme a inversão solicitada para a montagem. Validar LED e clique do módulo acima e abaixo de 30 °C após reenviar o sketch. Para testar a saída de ventilação com um LED, alterar temporariamente para `RELE_ATIVO HIGH`. Com a alimentação desligada, desconectar o módulo relé e ligar **pino 9 → resistor de 220 Ω → ânodo do LED (perna longa); cátodo (perna curta/lado achatado) → GND do Mega**. Reenviar o sketch. O LED inicia apagado, acende acima de 30 °C e apaga em 30 °C ou menos, acompanhando `Ventilacao` no serial. A primeira leitura ocorre após cerca de 18 s; as seguintes, a cada 8 s. Ao reinstalar o relé, remover o LED de teste, ajustar `RELE_ATIVO` à polaridade do módulo e reenviar o sketch. O diagrama principal continua representando a montagem com relé.
 
 ## Sequência de teste sem rede
 
@@ -82,7 +82,7 @@ O firmware está com `RELE_ATIVO LOW`, conforme a inversão solicitada para a mo
 3. Após cerca de 18 s, aparecem as primeiras leituras; ciclos seguintes a cada 8 s.
 4. Girar o potenciômetro: abaixo de 30%, ambos os LEDs de irrigação acendem; de 30% até abaixo de 60%, apenas o do ingá; a partir de 60%, ambos apagam.
 5. Iniciar com a tela aberta e testar primeiro desacoplado. Ao passar de 90% de luz, o motor deve percorrer 1024 meios passos; ao voltar a 90% ou menos, deve retornar ao zero. Repetir a leitura não deve acumular voltas. Conferir também durante tentativas Wi-Fi/MQTT.
-6. Comparar temperatura com o relé: liga acima de 25 °C, desliga em 25 °C ou menos. Se aparecer ERRO, conferir OUT/+/−, contato e modelo do sensor.
+6. Comparar temperatura com o relé: liga acima de 30 °C, desliga em 30 °C ou menos. Se aparecer ERRO, conferir OUT/+/−, contato e modelo do sensor.
 7. O LCD alterna espécie a cada ciclo e páginas a cada 1,5 s: solo/luz, temperatura, atuadores e conexão. `I` = irrigação, `S` = sombreamento, `V` = ventilação, `W` = Wi-Fi. `ON/OFF` indicam ligado/desligado.
 8. Configurar o Wi-Fi e seguir o teste MQTT do README. Durante publicação, a frase completa `>>> PUBLICANDO >>>` aparece repartida em duas linhas por cerca de 1,5 s após o último envio.
 

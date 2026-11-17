@@ -19,7 +19,7 @@ using std::isnan;
 inline unsigned long fakeNow = 0;
 inline int fakeSolo = 0, fakeLuz = 0;
 inline int outputs[70] = {};
-inline float fakeTemp = 30;
+inline float fakeTemp = 35;
 inline unsigned long millis() { return fakeNow; }
 inline void pinMode(int, int) {}
 inline void digitalWrite(int pin, int value) { outputs[pin] = value; }
